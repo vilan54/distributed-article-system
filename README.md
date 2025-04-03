@@ -50,9 +50,7 @@ pablomanuelborjamarcosjuanmanuel
   
 ## Descripción de la aplicación
 
-Breve descripción del sistema desarrollado, así como los requisitos
-funcionales y no funcionales del mismo, y cualquier otra información
-que contribuya a una mejor comprensión del mismo.
+Sistema de publicacion y consulta de articulos de cualquier ámbito, los cuáles tendran que pasar un estándar de rigurosidad antes de ser publicados. Los usuarios podrán consultar, modificar, publicar, valorar, y filtrar por tags los articulos. Las modificaciones y publicaciones deben ser aceptadas por un administrador antes de llevarse a cabo. Los requisitos no funcionales nos llevan a que la arquitectura sea una cliente-servidor distribuida, en vista del posible crecimiento y de mantener la disponibilidad. 
 
 
 # Información a incluir en la documentación del proyecto
