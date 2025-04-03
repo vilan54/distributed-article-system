@@ -36,12 +36,16 @@ aspectos:
 
 ## Nombre del equipo
 
-El nombre usado en moodle, si existe.
+pablomanuelborjamarcosjuanmanuel
 
 
 ## Autores
 
   - Nombre, apellidos, login udc, login github
+
+  - Marcos López Barrio, marcos.barrio, marcoslbarrio
+  - Manuel Cabaleiro Fernández, manuel.cabaleiro, Manuelcabaleiro
+  - Juan Otero Iglesias, juan.oteroi, Juanoteero
   
   
 ## Descripción de la aplicación
