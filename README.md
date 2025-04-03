@@ -46,6 +46,7 @@ pablomanuelborjamarcosjuanmanuel
   - Marcos López Barrio, marcos.barrio, marcoslbarrio
   - Manuel Cabaleiro Fernández, manuel.cabaleiro, Manuelcabaleiro
   - Juan Otero Iglesias, juan.oteroi, Juanoteero
+  - Pablo Vilán Mancuello, pablo.vilan, vilan54
   
   
 ## Descripción de la aplicación
