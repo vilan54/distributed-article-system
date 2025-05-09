@@ -47,6 +47,7 @@ pablomanuelborjamarcosjuanmanuel
   - Manuel Cabaleiro Fernández, manuel.cabaleiro, Manuelcabaleiro
   - Juan Otero Iglesias, juan.oteroi, Juanoteero
   - Pablo Vilán Mancuello, pablo.vilan, vilan54
+  - Manuel Cordeiro Martínez, m.cordeirom, mancordeiro
   
   
 ## Descripción de la aplicación
