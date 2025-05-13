@@ -65,3 +65,43 @@ El sistema permite a los usuarios interactuar con artículos académicos o de di
   3. Se requiere nueva revisión y aprobación.
 
 ---
+
+# 2. Diseño de la aplicación
+
+## 2.1 Diagramas C4
+
+### Diagrama de Contexto
+![Diagrama de contexto](Contexto.png)
+
+---
+
+### Diagrama de Contenedor
+![Diagrama de contenedores](Contenedor.png)
+
+---
+
+### Diagrama de Componentes
+![Diagrama de componentes](Componentes.png)
+
+---
+
+## 2.2 Decisiones de diseño
+
+[Decisión 01](Decisiones/ADR-01.md)
+
+[Decisión 02](Decisiones/ADR-02.md)
+
+[Decisión 03](Decisiones/ADR-03.md)
+
+
+# 3. Instrucciones
+
+( Instrucciones para compilar, desplegar, utilizar, ejecutar los tests, ... )
+
+# 4. Tests
+
+( Tipos de tests )
+
+( Escenarios cubiertos por las pruebas )
+
+( Escenarios no cubiertos por las pruebas )
