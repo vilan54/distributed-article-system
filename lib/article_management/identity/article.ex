@@ -10,6 +10,7 @@ defmodule ArticleManagement.Content.Article do
    field :content, :string
    field :status, Ecto.Enum, values: [:draft, :pending_review, :published, :rejected]
    belongs_to :author, ArticleManagement.Accounts.User
+   many_to_many :tags, ArticleManagement.Identity.Tag, join_through: "article_tags"
 
    timestamps()
  end

@@ -47,6 +47,29 @@ Módulo central para la gestión de artículos.
   """
   def delete_article(%Article{} = article), do: Repo.delete(article)
 
+  @doc """
+  Crea una valoración del artículo en el sistema
+  """
+
+  def rate_article(attrs) do
+    %Rating{}
+    |> Rating.changeset(attrs)
+    |> Repo.insert(on_conflict :replace_all, conflict_target: [:user_id, :article_id])
+  end
+
+  @doc """
+  Se filtran los artículos por tags
+  """
+
+
+  def list_article_tag(tag_name) do
+  from(at in Article,
+  join: t in assoc(at, :tags),
+  where: t.name == ^tag_name,
+  preload: [:tags]
+  )
+  |> Repo.all()
+end
 
   defp fetch_author(nil), do: {:error, :author_id_required}
 
