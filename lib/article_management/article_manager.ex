@@ -4,7 +4,6 @@ defmodule ArticleManagement.ArticleManager do
 Módulo central para la gestión de artículos.
 """
 
-  alias ArticleManagement.UserManager
   alias ArticleManagement.{Repo, Content.Article}
 
   @doc """
@@ -26,7 +25,7 @@ Módulo central para la gestión de artículos.
     author_id = attrs["author_id"] || attrs[:author_id]
 
     with {:ok, user} <- fetch_author(author_id),
-         :ok <- check_permission(user) do
+         :ok <- check_permissions(user) do
       %Article{}
       |> Article.changeset(attrs)
       |> Repo.insert()
@@ -48,9 +47,7 @@ Módulo central para la gestión de artículos.
   """
   def delete_article(%Article{} = article), do: Repo.delete(article)
 
-  @doc """
-  Obtiene los usuarios de UserManager usando username o id
-  """
+
   defp fetch_author(nil), do: {:error, :author_id_required}
 
   defp fetch_author(author_id) do
@@ -60,9 +57,6 @@ Módulo central para la gestión de artículos.
     end
   end
 
-  @doc """
-  Verifica los permisos segun el rol
-  """
   defp check_permissions(%{role: role}) when role in [:user, :admin], do: :ok
   defp check_permissions(_), do: {:error, :unauthorized}
 
