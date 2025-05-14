@@ -1,4 +1,4 @@
-defmodule ArticleManagement.Accounts.User do
+defmodule ArticleManagement.Identity.User do
   @moduledoc """
   Esquema que representa un usuario del sistema.
 

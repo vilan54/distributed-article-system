@@ -1,4 +1,4 @@
-defmodule ArticleManagement.Content.Article do
+defmodule ArticleManagement.Identity.Article do
  use Ecto.Schema
  import Ecto.Changeset
 
@@ -9,7 +9,7 @@ defmodule ArticleManagement.Content.Article do
    field :title, :string
    field :content, :string
    field :status, Ecto.Enum, values: [:draft, :pending_review, :published, :rejected]
-   belongs_to :author, ArticleManagement.Accounts.User
+   belongs_to :author, ArticleManagement.Identity.User
    many_to_many :tags, ArticleManagement.Identity.Tag, join_through: "article_tags"
 
    timestamps()

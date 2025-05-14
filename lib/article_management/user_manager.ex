@@ -7,7 +7,7 @@ defmodule ArticleManagement.UserManager do
   """
 
   alias ArticleManagement.Repo
-  alias ArticleManagement.Accounts.User
+  alias ArticleManagement.Identity.User
 
   @session_table :sessions
 
