@@ -14,6 +14,9 @@ defmodule ArticleManagement.Identity.User do
     field :password_hash, :string
     field :role, Ecto.Enum, values: [:user, :admin]
 
+    # Añadir un campo virtual para :password
+    field :password, :string, virtual: true
+
     timestamps()
   end
 
@@ -22,7 +25,7 @@ defmodule ArticleManagement.Identity.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :password, :role])
+    |> cast(attrs, [:username, :password, :role])  # Usar el campo virtual :password
     |> validate_required([:username, :password, :role])
     |> validate_length(:username, min: 3)
     |> validate_length(:password, min: 6)
@@ -33,11 +36,11 @@ defmodule ArticleManagement.Identity.User do
   defp hash_password(changeset) do
     case get_change(changeset, :password) do
       nil -> changeset
-      plain ->
-        put_change(changeset, :password_hash, hash(plain))
-        |> delete_change(:password)
+      plain_password ->
+        # Usando Bcrypt para hashear la contraseña de manera más segura
+        password_hash = Bcrypt.hash_pwd_salt(plain_password)
+        put_change(changeset, :password_hash, password_hash)
+        |> delete_change(:password)  # Eliminar :password después de ser procesado
     end
   end
-
-  defp hash(password), do: :crypto.hash(:sha256, password) |> Base.encode16()
 end

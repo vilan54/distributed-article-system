@@ -13,9 +13,11 @@ defmodule ArticleManagement.Application do
   use Application
 
   def start(_type, _args) do
+    IO.puts("Starting ArticleManagement.Repo...")
     children = [
-      ArticleManagement.Repo
-      # Aquí puedes añadir más procesos supervisados (ej. UserManager, ReviewService, etc.)
+      ArticleManagement.Repo,
+      ArticleManagement.UserManager,
+      ArticleManagement.ModerationQueue
     ]
 
     opts = [strategy: :one_for_one, name: ArticleManagement.Supervisor]

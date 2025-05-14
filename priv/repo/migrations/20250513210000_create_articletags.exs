@@ -3,7 +3,7 @@ defmodule ArticleManagement.Repo.Migrations.CreateArticlesTags do
 
   def change do
     create table(:article_tags) do
-      add :article_id, references(:article), null: false
+      add :article_id, references(:articles), null: false
       add :tag_id, references(:tags), null: false
 
       timestamps()

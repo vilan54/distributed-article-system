@@ -1,8 +1,8 @@
 #Gestion de articulos y todas sus funciones
 defmodule ArticleManagement.ArticleManager do
   @moduledoc"""
-Módulo central para la gestión de artículos.
-"""
+  Módulo central para la gestión de artículos.
+  """
   import Ecto.Query
   alias ArticleManagement.{Repo, Identity.Article}
   alias ArticleManagement.Identity.Rating
@@ -27,24 +27,22 @@ Módulo central para la gestión de artículos.
     author_id = attrs["author_id"] || attrs[:author_id]
 
     with {:ok, user} <- fetch_author(author_id),
-         :ok <- check_permissions(user) do
+        :ok <- check_permissions(user) do
+
+      attrs = Map.put(attrs, :status, :pending_review)
+
       %Article{}
       |> Article.changeset(attrs)
       |> Repo.insert()
       |> case do
         {:ok, article} ->
-          # Cambiar el estado del artículo a :pending_review
-          article
-          |> Article.changeset(%{status: :pending_review})
-          |> Repo.update()
-
-          # Agregar el artículo a la cola de moderación
           ModerationQueue.enqueue(article.id)
           {:ok, article}
 
-        {:error, reason} -> {:error, reason}
+        {:error, reason} ->
+          {:error, reason}
       end
-    end
+      end
   end
 
 
@@ -93,7 +91,7 @@ Módulo central para la gestión de artículos.
   defp fetch_author(nil), do: {:error, :author_id_required}
 
   defp fetch_author(author_id) do
-    case Repo.get(ArticleManagement.Accounts.User, author_id) do
+    case Repo.get(ArticleManagement.Identity.User, author_id) do
       nil -> {:error, :author_not_found}
       user -> {:ok,user}
     end

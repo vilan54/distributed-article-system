@@ -13,12 +13,22 @@ defmodule ArticleManagement.UserManager do
 
   ## === Inicialización de la ETS de sesiones ===
 
-  def start_link do
-    unless :ets.whereis(@session_table) != :undefined do
+  def start_link(_opts) do
+    if :ets.whereis(@session_table) == :undefined do
       :ets.new(@session_table, [:named_table, :set, :public, read_concurrency: true])
     end
 
     {:ok, self()}
+  end
+
+  def child_spec(_opts) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, [[]]},
+      type: :worker,
+      restart: :permanent,
+      shutdown: 500
+    }
   end
 
   ## === Gestión de usuarios ===
@@ -68,15 +78,15 @@ defmodule ArticleManagement.UserManager do
   Verifica credenciales y crea sesión si son válidas.
   """
   def login(username, password) do
-    with %User{password_hash: stored_hash} = user <- get_user(username),
-         true <- stored_hash == hash(password) do
-      token = generate_token()
-      :ets.insert(@session_table, {token, username})
-      {:ok, %{token: token, role: user.role}}
-    else
-      _ -> {:error, :invalid_credentials}
-    end
+  with %User{password_hash: stored_hash} = user <- get_user(username),
+       true <- Bcrypt.verify_pass(password, stored_hash) do
+    token = generate_token()
+    :ets.insert(@session_table, {token, username})
+    {:ok, %{token: token, role: user.role}}
+  else
+    _ -> {:error, :invalid_credentials}
   end
+end
 
   @doc """
   Cierra sesión eliminando el token.
@@ -116,6 +126,5 @@ defmodule ArticleManagement.UserManager do
 
   ## === Utilidades privadas ===
 
-  defp hash(password), do: :crypto.hash(:sha256, password) |> Base.encode16()
   defp generate_token, do: :crypto.strong_rand_bytes(16) |> Base.encode16()
 end
