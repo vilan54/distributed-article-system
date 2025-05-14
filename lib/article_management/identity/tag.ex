@@ -1,6 +1,6 @@
 defmodule ArticleManagement.Identity.Tag do
   use Ecto.Schema
-  import Ecto.ChangeSet
+  import Ecto.Changeset
 
   schema "tags" do
     field :name, :string

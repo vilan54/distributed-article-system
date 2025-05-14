@@ -3,8 +3,10 @@ defmodule ArticleManagement.ArticleManager do
   @moduledoc"""
 Módulo central para la gestión de artículos.
 """
-
+  import Ecto.Query
   alias ArticleManagement.{Repo, Content.Article}
+  alias ArticleManagement.Identity.Rating
+  alias ArticleManagement.Identity.User
 
   @doc """
   Listar artículos
@@ -66,8 +68,10 @@ Módulo central para la gestión de artículos.
 
   def rate_article(attrs) do
     %Rating{}
+    changeset = Rating.changeset(%Rating{}, attrs)
+    Repo.insert(changeset)
     |> Rating.changeset(attrs)
-    |> Repo.insert(on_conflict :replace_all, conflict_target: [:user_id, :article_id])
+    |> Repo.insert(changeset, on_conflict: :replace_all, conflict_target: :id)
   end
 
   @doc """
@@ -75,14 +79,15 @@ Módulo central para la gestión de artículos.
   """
 
 
-  def list_article_tag(tag_name) do
-  from(at in Article,
-  join: t in assoc(at, :tags),
-  where: t.name == ^tag_name,
-  preload: [:tags]
-  )
-  |> Repo.all()
-end
+  def list_article_tag(article_id) do
+    from(tag in Tag,
+      join: article in assoc(tag, :article),
+      where: article.id == ^article_id,
+      select: tag
+    )
+    |> Repo.all()
+  end
+
 
   defp fetch_author(nil), do: {:error, :author_id_required}
 
@@ -97,3 +102,4 @@ end
   defp check_permissions(_), do: {:error, :unauthorized}
 
 end
+
