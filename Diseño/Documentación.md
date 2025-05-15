@@ -111,17 +111,17 @@ El sistema permite a los usuarios interactuar con artículos académicos o de di
 ## 2.1 Diagramas C4
 
 ### Diagrama de Contexto
-![Diagrama de contexto](Contexto.png)
+![Diagrama de contexto](DiagramasC4/ArticulosContexto.png)
 
 ---
 
 ### Diagrama de Contenedor
-![Diagrama de contenedores](Contenedor.png)
+![Diagrama de contenedores](DiagramasC4/ArticulosContenedores.png)
 
 ---
 
 ### Diagrama de Componentes
-![Diagrama de componentes](Componentes.png)
+![Diagrama de componentes](DiagramasC4/ArticulosContexto.png)
 
 ---
 
@@ -136,12 +136,62 @@ El sistema permite a los usuarios interactuar con artículos académicos o de di
 
 # 3. Instrucciones
 
-( Instrucciones para compilar, desplegar, utilizar, ejecutar los tests, ... )
+Para que el proyecto funcione correctamente debemos tener instalado **PostgreSQL**. Además, siguiendo la configuración
+del proyecto debemos tener:
+
+| Campo        | Valor     |
+|--------------|-----------|
+| Usuario      | asuser    |
+| Contraseña   | as        |
+| Base de datos| asuser    |
+
+Una vez hecho esto, primero iniciamos la base de datos asegurando que no quedaron datos de otras ejecuciones
+
+|                     |                                     |
+|---------------------|-------------------------------------|
+| `mix ecto.drop`     | Elimina la base de datos existente  |
+| `mix ecto.create`   | Crea una nueva base de datos        |
+| `mix ecto.migrate`  | Aplica las migraciones pendientes   |
+
+Finalmente iniciamos la consola interactiva: `iex -S mix`. A partir de aquí se llamarían a las funciones según el cliente
+o administrador quiera usando formato **Modulo**.funcion()
+
 
 # 4. Tests
 
-( Tipos de tests )
+En nuestra aplicación se realizaron distintos tipos de pruebas para verificar el funcionamiento de la aplicación:
+* Pruebas de unidad que verifican el funcionamiento de funciones aisladas. 
+* Pruebas de integridad en las intervienen varios módulos (UserManager y ArticleManager). 
+* Pruebas en la base de datos para verificar inserciones, modificaciones y eliminaciones
+* Pruebas de Autenticación para validar que el usuario se autentique correctamente.
 
-( Escenarios cubiertos por las pruebas )
+Los escenarios que se cubren son los siguientes:
 
-( Escenarios no cubiertos por las pruebas )
+* **Articulos**
+  * Listar artículos existentes.
+
+  * Obtener un artículo por su ID.
+
+  * Crear artículos validando existencia y permisos del autor.
+
+  * Actualizar artículos existentes.
+
+  * Eliminar artículos de la base de datos.
+
+* **Usuarios**
+  * Crear usuarios nuevos con verificación de duplicados.
+
+  * Eliminar usuarios existentes.
+
+  * Obtener usuarios por nombre.
+
+  * Validar roles (admin, user) para permisos de acción.
+
+* **Autenticación y sesiones**
+  * Login exitoso genera token de sesión.
+
+  * Logout elimina el token de sesión.
+
+  * Autenticación de acciones usando token.
+
+  * Validación de roles para autorización.
