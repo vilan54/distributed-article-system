@@ -5,8 +5,4 @@ config :article_management, ArticleManagement.Repo,
   password: "as",
   database: "asuser",
   hostname: "localhost",
-  pool_size: 10
-
-config :article_management, ecto_repos: [ArticleManagement.Repo]
-
-import_config "#{config_env()}.exs"
+  pool: Ecto.Adapters.SQL.Sandbox
