@@ -1,0 +1,38 @@
+En nuestra aplicación se realizaron distintos tipos de pruebas para verificar el funcionamiento de la aplicación. 
+Entre ellas pruebas de unidad que verifican el funcionamiento de funciones aisladas. 
+Pruebas de integridad en las intervienen varios módulos (UserManager y ArticleManager). 
+Pruebas en la base de datos para verificar inserciones, modificaciones y eliminaciones. Pruebas de Autenticación para validar que el usuario se autentique correctamente.
+
+Los escenarios que se cubren son los siguientes:
+
+Artículos:
+
+-Listar artículos existentes.
+
+-Obtener un artículo por su ID.
+
+-Crear artículos validando existencia y permisos del autor.
+
+-Actualizar artículos existentes.
+
+-Eliminar artículos de la base de datos.
+
+Usuarios:
+
+-Crear usuarios nuevos con verificación de duplicados.
+
+-Eliminar usuarios existentes.
+
+-Obtener usuarios por nombre.
+
+-Validar roles (admin, user) para permisos de acción.
+
+Autenticación y Sesiones:
+
+-Login exitoso genera token de sesión.
+
+-Logout elimina el token de sesión.
+
+-Autenticación de acciones usando token.
+
+-Validación de roles para autorización.
