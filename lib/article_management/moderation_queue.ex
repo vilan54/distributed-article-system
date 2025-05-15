@@ -1,41 +1,33 @@
 defmodule ArticleManagement.ModerationQueue do
-  use GenServer
-
   @moduledoc """
-  GenServer que maneja la cola de artículos pendientes de moderación.
+  Módulo para manejar la cola de artículos pendientes de moderación.
+
+  La cola se basa en los artículos con estado `:pending_review`,
+  ordenados cronológicamente por su `inserted_at`.
   """
 
-  # Iniciar el GenServer con una cola vacía
-  def start_link(_args) do
-    GenServer.start_link(__MODULE__, [], name: __MODULE__)
-  end
+  import Ecto.Query
+  alias ArticleManagement.{Repo, Identity.Article}
 
-  # Función de callback para iniciar el estado del GenServer
-  def init(queue) do
-    {:ok, queue}
-  end
-
-  # Función para agregar un artículo a la cola de moderación
-  def enqueue(article_id) do
-    GenServer.cast(__MODULE__, {:enqueue, article_id})
-  end
-
-  # Función para obtener el primer artículo de la cola
+  @doc """
+  Devuelve el siguiente artículo pendiente de revisión.
+  Si no hay artículos pendientes, devuelve `nil`.
+  """
   def dequeue do
-    GenServer.call(__MODULE__, :dequeue)
+    Article
+    |> where([a], a.status == :pending_review)
+    |> order_by(asc: :inserted_at)
+    |> limit(1)
+    |> Repo.one()
+    |> case do
+      nil -> nil
+      article -> article.id
+    end
   end
 
-  # Callback para manejar la inserción en la cola
-  def handle_cast({:enqueue, article_id}, queue) do
-    {:noreply, [article_id | queue]}  # Agregar al frente de la cola
-  end
-
-  # Callback para manejar la extracción de la cola
-  def handle_call(:dequeue, _from, [article_id | queue]) do
-    {:reply, article_id, queue}  # Retornar el primer artículo y actualizar la cola
-  end
-
-  def handle_call(:dequeue, _from, []) do
-    {:reply, nil, []}  # Si la cola está vacía, devolver nil
-  end
+  @doc """
+  No hace falta `enqueue` explícito porque insertar un artículo
+  con estado `:pending_review` ya lo posiciona automáticamente en la cola.
+  """
+  def enqueue(_article_id), do: :ok
 end
