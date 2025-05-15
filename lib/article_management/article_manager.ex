@@ -76,8 +76,6 @@ defmodule ArticleManagement.ArticleManager do
   @doc """
   Se filtran los artículos por tags
   """
-
-
   def list_article_tag(article_id) do
     from(tag in ArticleManagement.Identity.Tag,
       join: article in assoc(tag, :article),
