@@ -16,8 +16,7 @@ defmodule ArticleManagement.Application do
     IO.puts("Starting ArticleManagement.Repo...")
     children = [
       ArticleManagement.Repo,
-      ArticleManagement.UserManager,
-      ArticleManagement.ModerationQueue
+      ArticleManagement.UserManager
     ]
 
     opts = [strategy: :one_for_one, name: ArticleManagement.Supervisor]
