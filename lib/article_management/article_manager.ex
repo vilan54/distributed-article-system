@@ -12,7 +12,9 @@ defmodule ArticleManagement.ArticleManager do
   Listar artículos que no están en estado `pending_review`
   """
   def list_articles do
-    from(a in Article, where: a.status != "pending_review")
+    status = :pending_review
+
+    from(a in Article, where: a.status != ^status)
     |> Repo.all()
   end
 
