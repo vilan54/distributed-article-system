@@ -195,3 +195,46 @@ Los escenarios que se cubren son los siguientes:
   * Autenticación de acciones usando token.
 
   * Validación de roles para autorización.
+
+ # 5. Tácticas
+
+ Este apartado resume las tácticas de arquitectura implementadas en el sistema , clasificadas por sus objetivos de calidad: seguridad, disponibilidad, rendimiento e integración.
+
+---
+
+## Tácticas de Seguridad
+
+- **Autenticación y autorización basada en roles**  
+	Se controla el acceso a operaciones según el rol del usuario (`:user`, `:admin`).
+
+- **Contraseñas cifradas y sesiones seguras**  
+	Contraseñas almacenadas como hash (Bcrypt). Las sesiones se gestionan con tokens y se almacenan en memoria con ETS.
+
+---
+
+## Tácticas de Disponibilidad
+
+- **Persistencia del estado de la cola de moderación**  
+	Se evita el uso de memoria volátil para mantener la cola: los artículos pendientes se consultan directamente desde la base de datos en orden cronológico (`status: :pending_review`).
+
+- **Reinicio automático de procesos críticos**  
+	El supervisor OTP reinicia automáticamente procesos como `UserManager` si fallan, evitando caída del sistema.
+
+---
+
+## Tácticas de Rendimiento
+
+- **FIFO para asignación de artículos**  
+	La revisión de artículos se realiza en orden de llegada (First-In First-Out), minimizando el tiempo de espera.
+
+- **Procesamiento concurrente**  
+	Módulos como `UserManager` utilizan procesos (ETS + Supervisor) para gestionar sesiones de forma eficiente y concurrente.
+
+---
+
+## Tácticas de Integración
+
+- **Compartición de fuentes de datos**  
+	Todos los módulos acceden a un repositorio común (`PostgreSQL` mediante `Ecto`), permitiendo consistencia y cohesión.
+
+
