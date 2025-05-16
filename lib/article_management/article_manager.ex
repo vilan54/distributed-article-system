@@ -9,10 +9,11 @@ defmodule ArticleManagement.ArticleManager do
   alias ArticleManagement.ModerationQueue
 
   @doc """
-  Listar artículos
+  Listar artículos que no están en estado `pending_review`
   """
   def list_articles do
-    Repo.all(Article)
+    from(a in Article, where: a.status != "pending_review")
+    |> Repo.all()
   end
 
   @doc """

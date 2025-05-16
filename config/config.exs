@@ -9,4 +9,3 @@ config :article_management, ArticleManagement.Repo,
 
 config :article_management, ecto_repos: [ArticleManagement.Repo]
 
-import_config "#{config_env()}.exs"
