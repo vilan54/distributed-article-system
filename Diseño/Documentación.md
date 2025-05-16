@@ -121,7 +121,7 @@ El sistema permite a los usuarios interactuar con artículos académicos o de di
 ---
 
 ### Diagrama de Componentes
-![Diagrama de componentes](DiagramasC4/ArticulosContexto.png)
+![Diagrama de componentes](DiagramasC4/ArticulosComponentes.png)
 
 ---
 
@@ -132,6 +132,8 @@ El sistema permite a los usuarios interactuar con artículos académicos o de di
 [Decisión 02](Decisiones/ADR-02.md)
 
 [Decisión 03](Decisiones/ADR-03.md)
+
+[Decisión 04](Decisiones/ADR-04.md)
 
 
 # 3. Instrucciones
@@ -154,7 +156,35 @@ Una vez hecho esto, primero iniciamos la base de datos asegurando que no quedaro
 | `mix ecto.migrate`  | Aplica las migraciones pendientes   |
 
 Finalmente iniciamos la consola interactiva: `iex -S mix`. A partir de aquí se llamarían a las funciones según el cliente
-o administrador quiera usando formato **Modulo**.funcion()
+o administrador quiera
+
+Para la demostración usada en la presentación se hizo:
+
+1. `{:ok, user} = ArticleManagement.UserManager.create_user("john_doe", "password123")` Para crear usuario
+2. `{:ok, session} = ArticleManagement.UserManager.login("john_doe", "password123")` Para logearse como el usuario
+3. `user = ArticleManagement.UserManager.get_user_by_token(session.token)` Para guardar las variables que usaremos
+4. 
+    ```
+      attrs = %{                                                             
+        title: "Artículo de prueba",                                         
+        content: "Contenido de ejemplo.",                                    
+        author_id: user.id                                                   
+      }
+    ```
+    Para crear las variables del artículo
+
+5. `{:ok, article} = ArticleManagement.ArticleManager.create_article(attrs)` Para mandar el articulo a revisión
+6. ` ArticleManagement.ArticleManager.list_articles` Para ver todos los artículos (como no se aprobó todavía no debería salir nada)
+
+
+7. `{:ok, admin} = ArticleManagement.UserManager.create_user("admin_user", "supersecurepass", :admin)` Para crear al administrador
+8. `{:ok, session} = ArticleManagement.UserManager.login("admin_user", "supersecurepass")` Para logearse como el administrador
+9. `admin = ArticleManagement.UserManager.get_user_by_token(session.token)` Para guardar las bariables del administrador
+10. `ArticleManagement.ReviewPipeline.assign_article_to_admin()` Para decirle al sistema que si hay artículos, los asigne a los admins
+11. `{:ok, article} = ArticleManagement.ReviewPipeline.get_assigned_article(admin.id)` Para ver que artículo tenemos asignado
+12. `ArticleManagement.ReviewPipeline.review_article(admin.id, article.id, :accept)` Para aceptar el artículo
+13. ` ArticleManagement.ArticleManager.list_articles` Para ver todos los artículos (como ahora si se aprobó todavía debería salir
+      el artículo)
 
 
 # 4. Tests
